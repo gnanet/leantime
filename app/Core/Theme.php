@@ -5,6 +5,8 @@ namespace Leantime\Core;
 use Exception;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Leantime\Domain\Setting\Repositories\Setting;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * theme - Engine for handling themes
@@ -221,7 +223,6 @@ class Theme
      */
     public function getColorMode()
     {
-
         //Return generic theme
         if (isset($_SESSION['usersettings.colorMode'])) {
             return $_SESSION['usersettings.colorMode'];
@@ -341,14 +342,18 @@ class Theme
         }
 
         $_SESSION['usersettings.theme'] = $id;
-        setcookie(
-            'theme',
-            $id,
-            [
-                'expires' => time() + 60 * 60 * 24 * 30,
-                'path' => $this->config->appDir . '/',
-                'samesite' => 'Strict',
-            ]
+
+        Events::add_filter_listener(
+            'leantime.core.httpkernel.handle.response_before_send',
+            fn (Response $response) => tap($response, fn (Response $response) => $response->headers->setCookie(
+                Cookie::create(
+                    name: 'theme',
+                    value: $id,
+                    expire: time() + 60 * 60 * 24 * 30,
+                    path: $this->config->appDir . '/',
+                    sameSite: 'Strict'
+                )
+            ))
         );
     }
 
@@ -362,20 +367,23 @@ class Theme
      */
     public function setColorMode(string $colorMode): void
     {
-
         if ($colorMode == '') {
             $colorMode = 'light';
         }
 
         $_SESSION['usersettings.colorMode'] = $colorMode;
-        setcookie(
-            'colorMode',
-            $colorMode,
-            [
-                'expires' => time() + 60 * 60 * 24 * 30,
-                'path' => $this->config->appDir . '/',
-                'samesite' => 'Strict',
-            ]
+
+        Events::add_filter_listener(
+            'leantime.core.httpkernel.handle.response_before_send',
+            fn (Response $response) => tap($response, fn (Response $response) => $response->headers->setCookie(
+                Cookie::create(
+                    name: 'colorMode',
+                    value: $colorMode,
+                    expire: time() + 60 * 60 * 24 * 30,
+                    path: $this->config->appDir . '/',
+                    sameSite: 'Strict'
+                )
+            ))
         );
     }
 
@@ -383,8 +391,8 @@ class Theme
      * setFont - Set active font
      *
      *
-     * @access public
-     * @param  string $font font name key (roboto, atkinson).
+     * @access  public
+     * @param   string $font font name key (roboto, atkinson).
      * @return void
      */
     public function setFont(string $font): void
@@ -395,14 +403,18 @@ class Theme
         }
 
         $_SESSION['usersettings.themeFont'] = $font;
-        setcookie(
-            'themeFont',
-            $font,
-            [
-                'expires' => time() + 60 * 60 * 24 * 30,
-                'path' => $this->config->appDir . '/',
-                'samesite' => 'Strict',
-            ]
+
+        Events::add_filter_listener(
+            'leantime.core.httpkernel.handle.response_before_send',
+            fn (Response $response) => tap($response, fn (Response $response) => $response->headers->setCookie(
+                Cookie::create(
+                    name: 'themeFont',
+                    value: $font,
+                    expire: time() + 60 * 60 * 24 * 30,
+                    path: $this->config->appDir . '/',
+                    sameSite: 'Strict'
+                )
+            ))
         );
     }
 
@@ -410,26 +422,29 @@ class Theme
      * setColorScheme - Set active theme
      *
      *
-     * @access public
-     * @param  string $colorScheme color scheme of theme (themeDefault, companyColors).
-     * @return void
+     * @access  public
+     * @param   string $colorScheme color scheme of theme (themeDefault, companyColors).
+     * @return  void
      */
     public function setColorScheme(string $colorScheme): void
     {
-
         if ($colorScheme == '') {
             $colorScheme = 'themeDefault';
         }
 
         $_SESSION['usersettings.colorScheme'] = $colorScheme;
-        setcookie(
-            'colorScheme',
-            $colorScheme,
-            [
-                'expires' => time() + 60 * 60 * 24 * 30,
-                'path' => $this->config->appDir . '/',
-                'samesite' => 'Strict',
-            ]
+
+        Events::add_filter_listener(
+            'leantime.core.httpkernel.handle.response_before_send',
+            fn (Response $response) => tap($response, fn (Response $response) => $response->headers->setCookie(
+                Cookie::create(
+                    name: 'colorScheme',
+                    value: $colorScheme,
+                    expire: time() + 60 * 60 * 24 * 30,
+                    path: $this->config->appDir . '/',
+                    sameSite: 'Strict'
+                )
+            ))
         );
 
         $this->setAccentColors($colorScheme);

@@ -47,16 +47,12 @@ class Header extends Composer
     /**
      * @return array
      */
-    /**
-     * @return array
-     */
     public function with(): array
     {
         $theme = $this->themeCore->getActive();
         $colorMode = $this->themeCore->getColorMode();
         $colorScheme = $this->themeCore->getColorScheme();
         $themeFont = $this->themeCore->getFont();
-
 
         // Set colors to use
         if (! isset($_SESSION["companysettings.sitename"])) {

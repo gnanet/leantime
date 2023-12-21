@@ -40,10 +40,11 @@ class HttpKernel implements HttpKernelContract
         $this->requestStartedAt = microtime(true);
 
         try {
-            return (new Pipeline($this->getApplication()))
+            return self::dispatch_filter('response_before_send', (new Pipeline($this->getApplication()))
                 ->send($request)
                 ->through($this->getMiddleware())
-                ->then(fn () => Frontcontroller::dispatch());
+                ->then(fn () => Frontcontroller::dispatch())
+            );
         } catch (HttpResponseException $e) {
             return $e->getResponse();
         } catch (\Throwable $e) {
