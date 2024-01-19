@@ -219,7 +219,7 @@ if (isset($canvasItem['id']) && $canvasItem['id'] != '') {
         leantime.editorController.initComplexEditor();
         leantime.ticketsController.initTagsInput();
 
-        <?php if (!$login::userIsAtLeast($roles::$editor)) { ?>
+        <?php if (!$login::userIsAtLeast($roles::$customer)) { ?>
             leantime.authController.makeInputReadonly(".nyroModalCont");
 
 

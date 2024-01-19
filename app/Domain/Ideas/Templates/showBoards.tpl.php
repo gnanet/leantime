@@ -67,7 +67,7 @@ foreach ($tpl->get('allCanvas') as $canvasRow) {
 
         <div class="row">
             <div class="col-md-4">
-                <?php  if ($login::userIsAtLeast($roles::$editor)) { ?>
+                <?php  if ($login::userIsAtLeast($roles::$customer)) { ?>
                     <?php if (count($tpl->get('allCanvas')) > 0) { ?>
                         <a href="#/ideas/ideaDialog?type=idea" class="btn btn-primary" id="customersegment"><span
                                     class="far fa-lightbulb"></span><?php echo $tpl->__("buttons.add_idea") ?></a>
@@ -104,7 +104,7 @@ foreach ($tpl->get('allCanvas') as $canvasRow) {
                         <div class="row">
                             <div class="col-md-12">
 
-                                <?php  if ($login::userIsAtLeast($roles::$editor)) { ?>
+                                <?php  if ($login::userIsAtLeast($roles::$customer)) { ?>
                                     <div class="inlineDropDownContainer" style="float:right;">
 
                                         <a href="javascript:void(0);" class="dropdown-toggle ticketDropDown" data-toggle="dropdown">
@@ -320,7 +320,7 @@ foreach ($tpl->get('allCanvas') as $canvasRow) {
         leantime.ideasController.initBoardControlModal();
         leantime.ideasController.initWallImageModals();
 
-        <?php if ($login::userIsAtLeast($roles::$editor)) { ?>
+        <?php if ($login::userIsAtLeast($roles::$customer)) { ?>
             leantime.ideasController.initStatusDropdown();
             leantime.ideasController.initUserDropdown();
         <?php } else { ?>

@@ -32,7 +32,7 @@ namespace Leantime\Domain\Ideas\Controllers {
         public function run()
         {
 
-            Auth::authOrRedirect([Roles::$owner, Roles::$admin, Roles::$manager, Roles::$editor]);
+            Auth::authOrRedirect([Roles::$owner, Roles::$admin, Roles::$manager, Roles::$editor, Roles::$customer]);
 
             if (isset($_GET['id'])) {
                 $id = (int)($_GET['id']);

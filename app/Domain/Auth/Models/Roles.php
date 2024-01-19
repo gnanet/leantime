@@ -13,6 +13,7 @@ namespace Leantime\Domain\Auth\Models {
 
         public static string $readonly = 'readonly';
         public static string $commenter = 'commenter';
+        public static string $customer = 'customer';
         public static string $editor = 'editor';
         public static string $manager = 'manager';
         public static string $admin = 'admin';
@@ -21,6 +22,7 @@ namespace Leantime\Domain\Auth\Models {
         private static array $roleKeys = array(
             5 => 'readonly',      //prev: none
             10 => 'commenter',    //prev: client
+            15 => 'customer',       // idea creating customer
             20 => 'editor',       //prev: developer
             30 => 'manager',      //prev: clientmanager
             40 => 'admin',        //prev: manager
