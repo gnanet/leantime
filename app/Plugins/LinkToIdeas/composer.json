@@ -1,0 +1,23 @@
+{
+    "name": "leantime/LinkToIdeas",
+    "description": "Displays a link to Ideas on the welcome page",
+    "version": "0.1",
+    "screenshot": "/images/screenshot.png",
+    "authors": [
+        {
+            "name": "Gergely Nagy",
+            "email": "gna@r-us.hu"
+        }
+    ],
+    "homepage": "https://leantime.io",
+    "type": "plugin",
+    "keywords": [
+        "dashboard",
+        "link",
+        "ideas"
+    ],
+    "license": "MIT",
+    "require": {
+        "leantime/leantime": "2.4"
+    }
+}
