@@ -238,7 +238,7 @@ $users = $tpl->get('users');
                                                   <?php if (in_array(strtolower($file['extension']), $tpl->get('imgExtensions'))) :  ?>
                                                       <img style='max-height: 50px; max-width: 70px;' src="<?=BASE_URL ?>/download.php?module=<?php echo $file['module'] ?>&encName=<?php echo $file['encName'] ?>&ext=<?php $tpl->e($file['extension']); ?>&realName=<?php $tpl->e($file['realName']); ?>" alt="" />
                                                   <?php else : ?>
-                                                      <img style='max-height: 50px; max-width: 70px;' src='<?=BASE_URL ?>/dist/images/thumbs/doc.png' />
+                                                      <img style='max-height: 50px; max-width: 70px;' src='<?=BASE_URL ?>/dist/images/doc.png' />
                                                   <?php endif; ?>
                                                 <span class="filename"><?php $tpl->e($file['realName']); ?></span>
                                               </a>

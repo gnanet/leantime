@@ -72,7 +72,7 @@ foreach ($__data as $var => $val) {
                                     <?php if (in_array(strtolower($file['extension']), $tpl->get('imgExtensions'))) :  ?>
                                         <img style='max-height: 50px; max-width: 70px;' src="<?=BASE_URL ?>/download.php?module=<?php echo $file['module'] ?>&encName=<?php echo $file['encName'] ?>&ext=<?php echo $file['extension'] ?>&realName=<?php echo $file['realName'] ?>" alt="" />
                                     <?php else : ?>
-                                        <img style='max-height: 50px; max-width: 70px;' src='<?=BASE_URL ?>/dist/images/thumbs/doc.png' />
+                                        <img style='max-height: 50px; max-width: 70px;' src='<?=BASE_URL ?>/dist/images/doc.png' />
                                     <?php endif; ?>
                                     <span class="filename"><?php echo substr($file['realName'], 0, 10) . "(...)." . $file['extension'] ?></span>
                                 </a>
