@@ -15,7 +15,7 @@ mix
     .setResourceRoot(`../`) // this is what to prefix the URL with
     .combine('./public/assets/js/libs/prism/prism.js', `public/dist/js/compiled-footer.${version}.min.js`)
     .js('./public/assets/js/app/htmx.js', `public/dist/js/compiled-htmx.${version}.min.js`)
-    .combine([
+    .babel([
         "./public/assets/js/app/app.js",
         "./public/assets/js/app/core/editors.js",
         "./public/assets/js/app/core/snippets.js",
@@ -111,6 +111,7 @@ mix
         "./public/assets/js/libs/tinymce-plugins/embed/index.js",
         "./public/assets/js/libs/tinymce-plugins/slashcommands/slashcommands.js",
         "./public/assets/js/libs/tinymce-plugins/mention/plugin.js",
+        "./public/assets/js/libs/tinymce-plugins/ticketref/plugin.js",
         "./public/assets/js/libs/tinymce-plugins/advancedTemplate/plugin.js",
     ], `public/dist/js/compiled-editor-component.${version}.min.js`)
     .combine([
@@ -147,6 +148,9 @@ mix
     })
     .webpackConfig({
         devtool: 'inline-source-map',
+        stats: {
+            children: true
+        },
         resolve: {
             alias: {
                 'images': path.resolve(__dirname, 'public/assets/images'),

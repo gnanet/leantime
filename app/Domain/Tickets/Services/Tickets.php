@@ -354,6 +354,16 @@ namespace Leantime\Domain\Tickets\Services {
 
 
         /**
+         * @param $projectId
+         * @return array|bool
+         */
+        public function getAllByProjectId($projectId): array|false
+        {
+            return $this->ticketRepository->getAllByProjectId($projectId);
+        }
+
+
+        /**
          * @param $searchCriteria
          * @return array|bool
          */

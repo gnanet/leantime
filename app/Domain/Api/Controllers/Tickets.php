@@ -34,6 +34,7 @@ namespace Leantime\Domain\Api\Controllers {
             $this->apiService = $apiService;
         }
 
+
         /**
          * get - handle get requests
          *
@@ -42,14 +43,33 @@ namespace Leantime\Domain\Api\Controllers {
          */
         public function get($params)
         {
+
+            if (isset($params['getAllByProjectId'])) {
+                if ($params['getAllByProjectId'] == 'current') {
+                    $projectId = $_SESSION['currentProject'];
+                } else {
+                    $projectId = $params['getAllByProjectId'];
+                }
+
+                $tickets = $this->ticketsApiService->getAllByProjectId($projectId);
+
+                return $this->tpl->displayJson(json_encode($tickets));
+//                $this->apiService->jsonResponse(1, $tickets);
+            }
+
             if (isset($params['search'])) {
                 $searchCriteria = $this->ticketsApiService->prepareTicketSearchArray($params);
 
                 $results = $this->ticketsApiService->getAll($searchCriteria);
 
+                /**
+                 * @todo remove this jsonResponse call and instead use Response class.
+                 * @see ../Services/Api.php
+                 **/
                 $this->apiService->jsonResponse(1, $results);
             }
         }
+
 
         /**
          * post - handle post requests

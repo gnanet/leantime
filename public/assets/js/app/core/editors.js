@@ -9,12 +9,12 @@ leantime.editorController = (function () {
 
         {start: '~~', end: '~~', format: 'bold'},
 
-        {start: '#', format: 'h1'},
-        {start: '##', format: 'h2'},
-        {start: '###', format: 'h3'},
-        {start: '####', format: 'h4'},
-        {start: '#####', format: 'h5'},
-        {start: '######', format: 'h6'},
+        {start: '# ', format: 'h1'},
+        {start: '## ', format: 'h2'},
+        {start: '### ', format: 'h3'},
+        {start: '#### ', format: 'h4'},
+        {start: '##### ', format: 'h5'},
+        {start: '###### ', format: 'h6'},
 
         // The following text patterns require the `lists` plugin
         {start: '* ', cmd: 'InsertUnorderedList'},
@@ -75,6 +75,44 @@ leantime.editorController = (function () {
         }
     };
 
+    var ticketrefConfig = {
+        delimiter: '#',
+        delay: 20,
+        queryBy: 'name',
+        source: function (query, process, delimiter) {
+            // Do your ajax call
+            // When using multiple delimiters you can alter the query depending on the delimiter used
+            if (delimiter === '#') {
+                jQuery.getJSON(leantime.appUrl + '/api/tickets?getAllByProjectId=current', function (data) {
+                    //call process to show the result
+                    let tasks = [];
+                    for (let i = 0; i < data.length; i++) {
+                        if ( data[i].type === "task" ) {
+                            tasks[i] = {
+                                "name":  data[i].id.toString(),
+                                "title": data[i].headline,
+                                "type": data[i].type
+                            };
+                        }
+                    }
+                    console.log(tasks);
+                    process(tasks);
+                });
+            }
+
+        },
+        highlighter: function (text) {
+            //make matched block italic
+            return text.replace(new RegExp('(' + this.query + ')', 'ig'), function ($1, match) {
+                return '<strong>' + match + '</strong>';
+            });
+        },
+        insert: function (item) {
+            return '<a class="ticketref" data-tagged-ticket-id="' + item.id + '" href="' + leantime.appUrl + '/tickets/showKanban#/tickets/showTicket/' + item.id + '">#' + item.id + ' ' + item.title.trim() + '</a>&nbsp;';
+        }
+    };
+
+
     var initSimpleEditor = function () {
 
         jQuery('textarea.tinymceSimple').tinymce(
@@ -85,7 +123,7 @@ leantime.editorController = (function () {
                 content_css: leantime.appUrl + '/theme/' + leantime.theme + '/css/theme.css,'
                     + leantime.appUrl + '/dist/css/editor.' + leantime.version + '.min.css',
                 content_style: "body.mce-content-body{ font-size:14px; } img { max-width: 100%; }",
-                plugins : "autosave,imagetools,shortlink,checklist,table,emoticons,autolink,image,lists,save,media,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,advlist,mention,slashcommands,textpattern",
+                plugins : "autosave,imagetools,shortlink,checklist,table,emoticons,autolink,image,lists,save,media,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,advlist,mention,ticketref,slashcommands,textpattern",
                 toolbar : "bold italic strikethrough | link unlink image | checklist bullist numlist | emoticons",
                 autosave_prefix: 'leantime-simpleEditor-autosave-{path}{query}-{id}-',
                 autosave_restore_when_empty: true,
@@ -102,6 +140,7 @@ leantime.editorController = (function () {
                 default_link_target: '_blank',
                 table_appearance_options: false,
                 mentions: mentionsConfig,
+                ticketref: ticketrefConfig,
                 textpattern_patterns: markDownTextPatterns,
                 images_upload_handler: function (blobInfo, success, failure) {
                     var xhr, formData;
@@ -219,7 +258,7 @@ leantime.editorController = (function () {
                 content_css: leantime.appUrl + '/theme/' + leantime.theme + '/css/theme.css,'
                     + leantime.appUrl + '/dist/css/editor.' + leantime.version + '.min.css',
                 content_style: "html {text-align:center;} body.mce-content-body{ font-size:14px; } img { max-width: 100%; }",
-                plugins : "autosave,imagetools,embed,autoresize,shortlink,checklist,bettertable,table,emoticons,autolink,image,lists,save,media,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,advancedTemplate,advlist,codesample,mention,slashcommands,textpattern",
+                plugins : "autosave,imagetools,embed,autoresize,shortlink,checklist,bettertable,table,emoticons,autolink,image,lists,save,media,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,advancedTemplate,advlist,codesample,mention,ticketref,slashcommands,textpattern",
                 toolbar : "bold italic strikethrough | formatselect forecolor | alignleft aligncenter alignright | link unlink image media embed emoticons | checklist bullist numlist | table  | codesample | advancedTemplate | restoredraft",
                 autosave_prefix: 'leantime-complexEditor-autosave-{path}{query}-{id}-'+entityId,
                 autosave_restore_when_empty: true,
@@ -258,8 +297,9 @@ leantime.editorController = (function () {
                     { text: 'C#', value: 'csharp' },
                     { text: 'C++', value: 'cpp' }
                 ],
-                textpattern_patterns: markDownTextPatterns,
                 mentions: mentionsConfig,
+                ticketref: ticketrefConfig,
+                textpattern_patterns: markDownTextPatterns,
                 images_upload_handler: function (blobInfo, success, failure) {
                     var xhr, formData;
 
